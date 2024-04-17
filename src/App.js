@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import Navbar from './components/Navbar'
 
-function App() {
+import TimeComponent from './components/TimeComponent';
+
+const App = () => {
+  const [timeComponents, setTimeComponents] = useState([
+    { id: 1, show: true },
+    { id: 2, show: true },
+    { id: 3, show: true },
+    { id: 4, show: true },
+    
+    
+    // Add more time components as needed
+  ]);
+
+  
+
+  const handleCloseTimeComponent = (id) => {
+    setTimeComponents(prevComponents =>
+      prevComponents.map(component =>
+        component.id === id ? { ...component, show: false } : component
+      )
+    );
+  };
+
+  const reverseTimeComponentOrder = () => {
+    setTimeComponents(prevComponents =>
+      prevComponents.slice().reverse()
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Navbar onReverseOrder={reverseTimeComponentOrder} />
+      <div className="App">
+        {timeComponents.map((component, index) => (
+          component.show && (
+            <TimeComponent
+              key={component.id}
+              id={component.id}
+              onClose={handleCloseTimeComponent}
+              draggable
+            />
+          )
+        ))}
+        {/* Render other components or content here */}
+      </div>
+    
+      
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
