@@ -1,55 +1,55 @@
-import React, { useState } from 'react'
-import Navbar from './components/Navbar'
-
-import TimeComponent from './components/TimeComponent';
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import TimeComponent from "./components/TimeComponent";
 
 const App = () => {
-  const [timeComponents, setTimeComponents] = useState([
-    { id: 1, show: true },
-    { id: 2, show: true },
-    { id: 3, show: true },
-    { id: 4, show: true },
-    
-    
-    // Add more time components as needed
-  ]);
-
-  
+  const [timeComponents, setTimeComponents] = useState([]);
+  const [uniqueListPlace, setUniqueListPlace] = useState(null);
 
   const handleCloseTimeComponent = (id) => {
-    setTimeComponents(prevComponents =>
-      prevComponents.map(component =>
-        component.id === id ? { ...component, show: false } : component
-      )
+    setTimeComponents((prevComponents) =>
+      prevComponents.filter((component) => component.id !== id)
     );
   };
 
   const reverseTimeComponentOrder = () => {
-    setTimeComponents(prevComponents =>
-      prevComponents.slice().reverse()
-    );
+    setTimeComponents((prevComponents) => prevComponents.slice().reverse());
+  };
+
+  const addTimeComponent = (selectedItem, uniqueListPlace) => {
+    const nextId = timeComponents.length + 1;
+    setTimeComponents((prevComponents) => [
+      ...prevComponents,
+      { id: nextId, selectedItem: selectedItem, uniqueListPlace: uniqueListPlace }, // Pass selectedItem and uniqueListPlace to TimeComponent
+    ]);
+  };
+
+  const handleListItemSelect = (listPlace, selectedItem) => {
+    setUniqueListPlace(listPlace);
+    addTimeComponent(selectedItem, listPlace); // Pass selectedItem and uniqueListPlace when adding a TimeComponent
   };
 
   return (
     <div>
-      <Navbar onReverseOrder={reverseTimeComponentOrder} />
+      <Navbar
+        onReverseOrder={reverseTimeComponentOrder}
+        onListItemSelect={handleListItemSelect}
+      />
       <div className="App">
         {timeComponents.map((component, index) => (
-          component.show && (
-            <TimeComponent
-              key={component.id}
-              id={component.id}
-              onClose={handleCloseTimeComponent}
-              draggable
-            />
-          )
+          <TimeComponent
+            key={component.id}
+            id={component.id}
+            onClose={handleCloseTimeComponent}
+            uniqueListPlace={component.uniqueListPlace} // Pass uniqueListPlace to TimeComponent
+            selectedItem={component.selectedItem} // Pass selectedItem to TimeComponent
+            draggable
+          />
         ))}
         {/* Render other components or content here */}
       </div>
-    
-      
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

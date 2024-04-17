@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const TimeComponent = ({ id, onClose }) => {
+const TimeComponent = ({ id, onClose, uniqueListPlace, selectedItem }) => {
   const [selectedHour, setSelectedHour] = useState(0);
   const [showTimeList, setShowTimeList] = useState(false);
+  const [uniqueListPlaceLocal, setUniqueListPlaceLocal] = useState(uniqueListPlace);
+  const [selectedItemLocal, setSelectedItemLocal] = useState(selectedItem);
+  
 
   const handleChange = (event) => {
     setSelectedHour(parseInt(event.target.value));
   };
+
+  useEffect(() => {
+    setUniqueListPlaceLocal(uniqueListPlace);
+  }, [uniqueListPlace]);
+
+  // Update selectedItemLocal when props change
+  useEffect(() => {
+    setSelectedItemLocal(selectedItem);
+  }, [selectedItem]);
+
 
   const generateTimeOptions = () => {
     const options = [];
@@ -66,13 +79,28 @@ const TimeComponent = ({ id, onClose }) => {
     return Math.floor((maxSliderValue / 8) * index);
   });
 
+  console.log("uniqueListPlace:", uniqueListPlaceLocal);
+  console.log("selectedItem:",selectedItemLocal);
+
+  
+ 
+
+// Keep the time part unchanged: "20:16"
+
+
+  
+
+  
+
+
+
   return (
     <div>
     <div className='lg:w-4/5 mx-auto mt-2 border border-blue-300 p-4 h-54 relative'>
-      <button onClick={handleClose} className="absolute top-0 right-0 m-2 text-xl">&times;</button>
+      <button onClick={() => onClose(id)} className="absolute top-0 right-0 m-2 text-xl">&times;</button>
       <div className='flex justify-between'>
         {/* Timezone and Time */}
-        <div><h2 className='text-4xl font-bold'>IST</h2></div>
+        <div><h2 className='text-4xl font-bold'>{uniqueListPlace && uniqueListPlace.abbreviation}</h2></div>
         <div className='flex w-64 lg:w-2/5 md:w-2/5 sm:w-2/5'>
           <input 
             type='text' 
@@ -92,10 +120,10 @@ const TimeComponent = ({ id, onClose }) => {
 
       <div className='flex justify-between mt-2'>
         {/* Full form, GMT, Current Date */}
-        <div><p>India Standard Time</p></div>
+        <div><p>{uniqueListPlaceLocal.fullName}</p></div>
         <div className="flex w-64 lg:w-2/5 md:w-2/5 sm:w-2/5">
-          <p className="w-1/2">GMT +5:30</p>
-          <p className="w-1/2">Tue, Apr 16</p>
+          <p className="w-1/2">GMT <span>{uniqueListPlaceLocal.gmtOffset}</span></p>
+          <p className="w-1/2">Hello</p>
         </div>
       </div>
 
