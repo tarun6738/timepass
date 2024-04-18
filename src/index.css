@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dark-mode {
+    background-color: black;
+    color: white;
+    .ip-field1{
+        background-color: #808080a8;
+        color: white;
+    }
+    
+    .ip-field2{
+        background-color: #808080a8;
+        color: white;
+        border: none;
+    }
+    .ip-field3{
+        background-color: #808080a8;
+        color: white;
+    }
+    .ip-field5{
+        background-color: white;
+        color: white;
+    }
+    .list1{
+        background-color: black;
+        color: white;
+    }
+    .list-item1:hover {
+        background-color: #676262; 
+      }
+
+    .time-component{
+        background-color: #282c34;
+        border: gray;
+    }
+    
+}
+
+
+  
